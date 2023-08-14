@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
         themeMode: ThemeMode.light,
         theme: ThemeData(
-          primarySwatch: Colors.yellow,
+          primarySwatch: Colors.green,
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
