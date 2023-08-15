@@ -18,6 +18,6 @@ class MainApp extends StatelessWidget {
         darkTheme: ThemeData(
           brightness: Brightness.dark,
         ),
-        home: HomePage());
+        home: const HomePage());
   }
 }
