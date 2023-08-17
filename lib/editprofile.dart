@@ -1,21 +1,61 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:profile_app/userdata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class EditProfile extends StatefulWidget {
+  const EditProfile({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<EditProfile> createState() => _EditProfile();
 }
 
-class _HomePageState extends State<HomePage> {
+class _EditProfile extends State<EditProfile> {
   String dropdownValue = 'Select Gender';
-  PickedFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  File? imageFile;
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+  final TextEditingController _bio = TextEditingController();
+
+  late SharedPreferences sharedPreferences;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialGetSavedData();
+  }
+
+  void initialGetSavedData() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> jsondatais =
+        jsonDecode(sharedPreferences.getString('userdata')!);
+
+    UserData user = UserData.fromJson(jsondatais);
+
+    if (jsondatais.isNotEmpty) {
+      _name.value = TextEditingValue(text: user.name);
+      _email.value = TextEditingValue(text: user.email);
+      _bio.value = TextEditingValue(text: user.bio);
+      _dob.value = TextEditingValue(text: user.dob);
+      _phone.value = TextEditingValue(text: user.phone);
+    }
+  }
+
+  void storeData() {
+    UserData user =
+        UserData(_name.text, _bio.text, _dob.text, _email.text, _phone.text);
+    String userdata = jsonEncode(user);
+
+    sharedPreferences.setString('userdata', userdata);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -27,9 +67,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               profilePic(),
               const SizedBox(height: 20),
-              firstName(),
-              const SizedBox(height: 20),
-              lastName(),
+              name(),
               const SizedBox(height: 20),
               phoneNumber(),
               const SizedBox(height: 20),
@@ -39,7 +77,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               dateOfBirth(),
               const SizedBox(height: 20),
-              bio()
+              bio(),
+              const SizedBox(height: 20),
+              saveButton(),
+              const SizedBox(height: 7),
+              clearButton()
             ],
           ),
         ));
@@ -52,9 +94,9 @@ class _HomePageState extends State<HomePage> {
           CircleAvatar(
               backgroundColor: Colors.black,
               radius: 80.0,
-              backgroundImage: _imageFile == null
+              backgroundImage: imageFile == null
                   ? const AssetImage("assets/images/profile.png")
-                  : FileImage(File(_imageFile!.path)) as ImageProvider),
+                  : FileImage(File(imageFile!.path)) as ImageProvider),
           Positioned(
             bottom: 20,
             right: 20,
@@ -99,7 +141,7 @@ class _HomePageState extends State<HomePage> {
             TextButton.icon(
               // <-- TextButton
               onPressed: () {
-                takephoto(ImageSource.camera);
+                ImagePicked(ImageSource.camera);
               },
               icon: const Icon(
                 Icons.camera,
@@ -115,7 +157,7 @@ class _HomePageState extends State<HomePage> {
             TextButton.icon(
               // <-- TextButton
               onPressed: () {
-                takephoto(ImageSource.gallery);
+                ImagePicked(ImageSource.gallery);
               },
               icon: const Icon(
                 Icons.image,
@@ -134,19 +176,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void takephoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(
-      source: source,
-    );
-
+  Future ImagePicked(ImageSource source) async {
+    final imageFile = await ImagePicker().pickImage(source: source);
+    if (imageFile == null) return;
+    final imageTemp = File(imageFile!.path);
     setState(() {
-      _imageFile = pickedFile as PickedFile;
+      this.imageFile = imageTemp;
     });
   }
 
-  Widget firstName() {
-    return const TextField(
-      decoration: InputDecoration(
+  Widget name() {
+    return TextFormField(
+      controller: _name,
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
           color: Colors.teal,
@@ -157,27 +199,7 @@ class _HomePageState extends State<HomePage> {
           Icons.person,
           color: Color.fromARGB(255, 98, 91, 91),
         ),
-        labelText: "First Name",
-      ),
-      cursorColor: Colors.black12,
-      cursorHeight: 20,
-    );
-  }
-
-  Widget lastName() {
-    return const TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Colors.teal,
-        )),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orange, width: 2)),
-        prefixIcon: Icon(
-          Icons.person,
-          color: Color.fromARGB(255, 98, 91, 91),
-        ),
-        labelText: "Last Name",
+        labelText: "Full Name",
       ),
       cursorColor: Colors.black12,
       cursorHeight: 20,
@@ -185,11 +207,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget phoneNumber() {
-    return const TextField(
+    return TextField(
+      controller: _phone,
       maxLength: 10,
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           border: OutlineInputBorder(
               borderSide: BorderSide(
             color: Colors.teal,
@@ -250,9 +273,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget emaiAdd() {
-    return const TextField(
+    return TextField(
+      controller: _email,
       keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
           color: Colors.teal,
@@ -271,11 +295,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget dateOfBirth() {
-    return const TextField(
+    return TextField(
+      controller: _dob,
       maxLength: 10,
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
       keyboardType: TextInputType.datetime,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           border: OutlineInputBorder(
               borderSide: BorderSide(
             color: Colors.teal,
@@ -295,9 +320,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget bio() {
-    return const TextField(
+    return TextField(
+      controller: _bio,
       maxLines: 4,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
           color: Colors.teal,
@@ -310,8 +336,42 @@ class _HomePageState extends State<HomePage> {
         ),
         labelText: "bio",
       ),
-      cursorColor: Color.fromARGB(31, 52, 44, 44),
+      cursorColor: const Color.fromARGB(31, 52, 44, 44),
       cursorHeight: 20,
+    );
+  }
+
+  Widget saveButton() {
+    return TextButton(
+      style: TextButton.styleFrom(
+          fixedSize: const Size(30, 30),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.blue,
+          textStyle: const TextStyle(fontSize: 15)),
+      onPressed: () async {
+        storeData();
+      },
+      child: const Text('save'),
+    );
+  }
+
+  Widget clearButton() {
+    return TextButton(
+      style: TextButton.styleFrom(
+          fixedSize: const Size(60, 30),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.red,
+          textStyle: const TextStyle(fontSize: 15)),
+      onPressed: () async {
+        setState(() {
+          _name.value = const TextEditingValue(text: "");
+          _email.value = const TextEditingValue(text: "");
+          _bio.value = const TextEditingValue(text: "");
+          _dob.value = const TextEditingValue(text: "");
+          _phone.value = const TextEditingValue(text: "");
+        });
+      },
+      child: const Text('clear'),
     );
   }
 }

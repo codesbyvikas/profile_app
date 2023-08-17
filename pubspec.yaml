@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker:
+  shared_preferences:
+  path_provider:
 
 dev_dependencies:
   flutter_test:

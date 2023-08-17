@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profile_app/homepage.dart';
+import 'package:profile_app/editprofile.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,6 +18,7 @@ class MainApp extends StatelessWidget {
         darkTheme: ThemeData(
           brightness: Brightness.dark,
         ),
-        home: const HomePage());
+        home: const EditProfile());
+    // home: const ProfilePage());
   }
 }
