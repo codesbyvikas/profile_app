@@ -1,7 +1,15 @@
 class UserData {
   String name, email, dob, phone, bio;
+  // imagePath;
 
-  UserData(this.name, this.bio, this.dob, this.email, this.phone);
+  UserData(
+    this.name,
+    this.bio,
+    this.dob,
+    this.email,
+    this.phone,
+    // this.imagePath);
+  );
 
   UserData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
@@ -9,6 +17,7 @@ class UserData {
         dob = json['dob'],
         phone = json['phone'],
         bio = json['bio']
+  // imagePath = json['imagePath']
   // image = json['image'];
   ;
 
@@ -18,6 +27,7 @@ class UserData {
         'dob': dob,
         'phone': phone,
         'bio': bio,
+        // 'imagePath': imagePath
         // 'image': image
       };
 }

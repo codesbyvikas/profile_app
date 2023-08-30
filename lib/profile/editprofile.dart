@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:profile_app/userdata.dart';
+import 'package:profile_app/profile/userdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
@@ -26,7 +26,6 @@ class _EditProfile extends State<EditProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initialGetSavedData();
   }
@@ -56,35 +55,37 @@ class _EditProfile extends State<EditProfile> {
     sharedPreferences.setString('userdata', userdata);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Profile App"),
+      appBar: AppBar(
+        title: const Text("Profile App"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+        child: ListView(
+          children: <Widget>[
+            profilePic(),
+            const SizedBox(height: 20),
+            name(),
+            const SizedBox(height: 20),
+            phoneNumber(),
+            const SizedBox(height: 20),
+            selectGender(),
+            const SizedBox(height: 20),
+            emaiAdd(),
+            const SizedBox(height: 20),
+            dateOfBirth(),
+            const SizedBox(height: 20),
+            bio(),
+            const SizedBox(height: 20),
+            saveButton(),
+            const SizedBox(height: 7),
+            clearButton()
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-          child: ListView(
-            children: <Widget>[
-              profilePic(),
-              const SizedBox(height: 20),
-              name(),
-              const SizedBox(height: 20),
-              phoneNumber(),
-              const SizedBox(height: 20),
-              selectGender(),
-              const SizedBox(height: 20),
-              emaiAdd(),
-              const SizedBox(height: 20),
-              dateOfBirth(),
-              const SizedBox(height: 20),
-              bio(),
-              const SizedBox(height: 20),
-              saveButton(),
-              const SizedBox(height: 7),
-              clearButton()
-            ],
-          ),
-        ));
+      ),
+    );
   }
 
   Widget profilePic() {
@@ -141,7 +142,7 @@ class _EditProfile extends State<EditProfile> {
             TextButton.icon(
               // <-- TextButton
               onPressed: () {
-                ImagePicked(ImageSource.camera);
+                imagePicked(ImageSource.camera);
               },
               icon: const Icon(
                 Icons.camera,
@@ -157,7 +158,7 @@ class _EditProfile extends State<EditProfile> {
             TextButton.icon(
               // <-- TextButton
               onPressed: () {
-                ImagePicked(ImageSource.gallery);
+                imagePicked(ImageSource.gallery);
               },
               icon: const Icon(
                 Icons.image,
@@ -176,10 +177,10 @@ class _EditProfile extends State<EditProfile> {
     );
   }
 
-  Future ImagePicked(ImageSource source) async {
+  Future imagePicked(ImageSource source) async {
     final imageFile = await ImagePicker().pickImage(source: source);
     if (imageFile == null) return;
-    final imageTemp = File(imageFile!.path);
+    final imageTemp = File(imageFile.path);
     setState(() {
       this.imageFile = imageTemp;
     });
