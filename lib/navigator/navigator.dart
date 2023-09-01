@@ -11,20 +11,22 @@ class NavigatorBar extends StatefulWidget {
 }
 
 class _NavigatorBarState extends State<NavigatorBar> {
-  int _myIndex = 0;
+  int myIndex = 0;
 
-  final List _screens = const [EditProfile(), Contacts(), Weather()];
+  final List _screens = [EditProfile(), Contacts(), Weather()];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _screens[_myIndex],
+        body: _screens[myIndex],
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color.fromARGB(255, 236, 237, 238),
           unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.black,
+          selectedItemColor: Colors.grey,
+          elevation: 0,
           onTap: (index) {
             setState(() {
-              _myIndex = index;
+              myIndex = index;
             });
           },
           items: const [
@@ -39,8 +41,7 @@ class _NavigatorBarState extends State<NavigatorBar> {
             BottomNavigationBarItem(
               icon: Icon(Icons.cloud),
               label: "Weather",
-              
-            )
+            ),
           ],
         ),
       ),

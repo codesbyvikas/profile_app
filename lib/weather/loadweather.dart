@@ -24,17 +24,17 @@ class _LoadWeatherState extends State<LoadWeather> {
     air_speed = instance.air_speed;
     des = instance.description;
     main = instance.main;
-     if (!mounted) return;  
-    Navigator.pushReplacementNamed(
-      context, 
-      MaterialPageRoute(builder:(contex)=>Weather( arguments: {
-      "temp_value": temp,
-      "hum_value": hum,
-      "air_speed_value": air_speed,
-      "des_value": des,
-      "main_value": main
-    }))
-    );
+    //  if (!mounted) return;
+    // Navigator.pushReplacementNamed(
+    //   context,
+    //   MaterialPageRoute(builder:(contex)=>Weather( arguments: {
+    //   "temp_value": temp,
+    //   "hum_value": hum,
+    //   "air_speed_value": air_speed,
+    //   "des_value": des,
+    //   "main_value": main
+    // }))
+    // );
   }
 
   @override
@@ -50,6 +50,5 @@ class _LoadWeatherState extends State<LoadWeather> {
     return Scaffold(
       body: SafeArea(child: Text("Loading")),
     );
-
   }
 }

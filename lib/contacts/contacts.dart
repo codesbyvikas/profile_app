@@ -11,9 +11,7 @@ class Contacts extends StatefulWidget {
 }
 
 class _ContactsState extends State<Contacts> {
-  List<Contact>? contacts;
-  String contactname = '';
-  String contactnumber = '';
+  List<Contact>? contact;
 
   @override
   void initState() {
@@ -23,9 +21,8 @@ class _ContactsState extends State<Contacts> {
 
   void getContact() async {
     if (await FlutterContacts.requestPermission()) {
-      contacts = await FlutterContacts.getContacts(
+      contact = await FlutterContacts.getContacts(
           withProperties: true, withPhoto: true);
-      // print(contacts);
       setState(() {});
     }
   }
@@ -41,34 +38,32 @@ class _ContactsState extends State<Contacts> {
           backgroundColor: Colors.blue,
           elevation: 0,
         ),
-        body: ((contacts) == null
+        body: ((contact) == null
             ? const Center(
                 child: CircularProgressIndicator(
                 color: Colors.blue,
               ))
             : ListView.builder(
-                itemCount: contacts!.length,
+                itemCount: contact!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Uint8List? image = contacts![index].photo;
-                  String num = (contacts![index].phones.isNotEmpty)
-                      ? (contacts![index].phones.first.number)
+                  Uint8List? image = contact![index].photo;
+                  String num = (contact![index].phones.isNotEmpty)
+                      ? (contact![index].phones.first.number)
                       : "--";
                   return ListTile(
-                    leading: (contacts![index].photo == null)
+                    leading: (contact![index].photo == null)
                         ? const CircleAvatar(child: Icon(Icons.person))
                         : CircleAvatar(backgroundImage: MemoryImage(image!)),
                     title: Text(
-                        "${contacts![index].name.first} ${contacts![index].name.last}"),
+                        "${contact![index].name.first} ${contact![index].name.last}"),
                     subtitle: Text(num),
                     onTap: () {
-                      setState(() {
-                        contactname =
-                            "${contacts![index].name.first} ${contacts![index].name.last}";
-                        contactnumber = num;
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ContactInfo()),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ContactInfo(
+                            contacts: contact![index],
+                          ),
+                        ),
                       );
                     },
                   );

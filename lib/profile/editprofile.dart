@@ -16,6 +16,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfile extends State<EditProfile> {
   String dropdownValue = 'Select Gender';
   File? imageFile;
+
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phone = TextEditingController();
@@ -128,52 +129,54 @@ class _EditProfile extends State<EditProfile> {
         horizontal: 20,
         vertical: 20,
       ),
-      child: Column(children: <Widget>[
-        const Text(
-          "Choose a profile picture",
-          style: TextStyle(fontSize: 20),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton.icon(
-              // <-- TextButton
-              onPressed: () {
-                imagePicked(ImageSource.camera);
-              },
-              icon: const Icon(
-                Icons.camera,
-                size: 24.0,
-              ),
-              label: const Text(
-                'Camera       ',
-                style: TextStyle(
-                  color: Colors.black,
+      child: Column(
+        children: <Widget>[
+          const Text(
+            "Choose a profile picture",
+            style: TextStyle(fontSize: 20),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton.icon(
+                // <-- TextButton
+                onPressed: () {
+                  imagePicked(ImageSource.camera);
+                },
+                icon: const Icon(
+                  Icons.camera,
+                  size: 24.0,
+                ),
+                label: const Text(
+                  'Camera       ',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-            TextButton.icon(
-              // <-- TextButton
-              onPressed: () {
-                imagePicked(ImageSource.gallery);
-              },
-              icon: const Icon(
-                Icons.image,
-                size: 24.0,
-              ),
-              label: const Text(
-                'Gallery',
-                style: TextStyle(
-                  color: Colors.black,
+              TextButton.icon(
+                // <-- TextButton
+                onPressed: () {
+                  imagePicked(ImageSource.gallery);
+                },
+                icon: const Icon(
+                  Icons.image,
+                  size: 24.0,
+                ),
+                label: const Text(
+                  'Gallery',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-          ],
-        )
-      ]),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -350,6 +353,30 @@ class _EditProfile extends State<EditProfile> {
           backgroundColor: Colors.blue,
           textStyle: const TextStyle(fontSize: 15)),
       onPressed: () async {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Alert"),
+            content: const Text("Details Saved"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  color: Colors.green,
+                  padding: const EdgeInsets.all(14),
+                  child: const Text(
+                    "okay",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
         storeData();
       },
       child: const Text('save'),
@@ -371,6 +398,31 @@ class _EditProfile extends State<EditProfile> {
           _dob.value = const TextEditingValue(text: "");
           _phone.value = const TextEditingValue(text: "");
         });
+        storeData();
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Alert"),
+            content: const Text("Details Deleted"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  color: Colors.green,
+                  padding: const EdgeInsets.all(14),
+                  child: const Text(
+                    "okay",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
       child: const Text('clear'),
     );
