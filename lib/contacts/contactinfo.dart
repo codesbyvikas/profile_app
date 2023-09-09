@@ -5,16 +5,18 @@ import 'package:url_launcher/url_launcher.dart';
 class ContactInfo extends StatelessWidget {
   final Contact contacts;
 
-  ContactInfo({Key? key, required this.contacts}) : super(key: key);
+  const ContactInfo({Key? key, required this.contacts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text((contacts.name.first) + "'s" + " details"),
+        title: Text("${contacts.name.first}'s details"),
       ),
-      body: Padding(
+      body: Container(
+        decoration:
+            const BoxDecoration(color: Color.fromARGB(255, 156, 231, 251)),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
         child: ListView(
           children: <Widget>[
@@ -23,7 +25,7 @@ class ContactInfo extends StatelessWidget {
             contactName(),
             const SizedBox(height: 5),
             contactNum(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             callButton(),
           ],
         ),
@@ -57,8 +59,8 @@ class ContactInfo extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Name:" + contacts.displayName,
-          style: TextStyle(
+          "Name:${contacts.displayName}",
+          style: const TextStyle(
             fontSize: 20,
           ),
         ),
@@ -79,8 +81,8 @@ class ContactInfo extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Phone no:" + contacts.phones.first.number,
-          style: TextStyle(
+          "Phone no:${contacts.phones.first.number}",
+          style: const TextStyle(
             fontSize: 20,
           ),
         ),
@@ -92,37 +94,56 @@ class ContactInfo extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        TextButton.icon(
-          // <-- TextButton
-          onPressed: () {
-            launchUrl(Uri.parse('tel:${contacts.phones.first.number}'));
-          },
-          icon: const Icon(
-            Icons.call,
-            size: 28.0,
-          ),
-          label: const Text(
-            'call       ',
-            style: TextStyle(
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: const Color.fromARGB(255, 179, 228, 228),
+            border: Border.all(
               color: Colors.black,
+              width: 1.5,
+            ),
+          ),
+          child: TextButton.icon(
+            // <-- TextButton
+            onPressed: () {
+              launchUrl(Uri.parse('tel:${contacts.phones.first.number}'));
+            },
+            icon: const Icon(
+              Icons.call,
+              size: 28.0,
+            ),
+            label: const Text(
+              'call         ',
+              style: TextStyle(color: Colors.black, fontSize: 15),
             ),
           ),
         ),
-        TextButton.icon(
-          // <-- TextButton
-          onPressed: () {
-            var whatsappUrl =
-                "whatsapp://send?phone=${contacts.phones.first.number}";
-            launchUrl(Uri.parse(whatsappUrl));
-          },
-          icon: const Icon(
-            Icons.chat,
-            size: 28.0,
-          ),
-          label: const Text(
-            'whatsApp',
-            style: TextStyle(
+        const SizedBox(width: 30),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: const Color.fromARGB(255, 179, 228, 228),
+            border: Border.all(
               color: Colors.black,
+              width: 1.5,
+            ),
+          ),
+          child: TextButton.icon(
+            onPressed: () {
+              var msg = 'sms:${contacts.phones.first}?body=';
+              launchUrl(Uri.parse(msg));
+            },
+            icon: const Icon(
+              Icons.chat,
+              size: 28.0,
+            ),
+            label: const Text(
+              'Message',
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           ),
         ),

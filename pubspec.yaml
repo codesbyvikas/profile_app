@@ -17,7 +17,8 @@ dependencies:
   flutter_screenutil: ^5.8.4
   flutter_contacts:
   url_launcher:
-  http: ^1.1.0
+  geolocator:
+  http:
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +31,9 @@ flutter:
   assets:
     - assets/images/profile.png
     - assets/images/contact_profile.png
+    - assets/images/cloud.png
+    - assets/images/contact_profile.png
+    - assets/images/barometer.png
+    - assets/images/humidity.png
+    - assets/images/thermometer.png
+    - assets/images/air.png

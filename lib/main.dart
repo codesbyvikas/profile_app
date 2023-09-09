@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:profile_app/navigator/navigator.dart';
-import 'package:profile_app/contacts/contactinfo.dart';
-import 'package:profile_app/weather/loadweather.dart';
-import 'package:profile_app/weather/weather.dart';
 
 void main() {
   runApp(const MainApp());
@@ -26,8 +23,7 @@ class _MainAppState extends State<MainApp> {
         darkTheme: ThemeData(
           brightness: Brightness.dark,
         ),
+        debugShowCheckedModeBanner: false,
         home: const NavigatorBar());
-
-    // home: ContactInfo());
   }
 }

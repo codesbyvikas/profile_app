@@ -14,7 +14,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfile extends State<EditProfile> {
-  String dropdownValue = 'Select Gender';
   File? imageFile;
 
   final TextEditingController _name = TextEditingController();
@@ -59,34 +58,32 @@ class _EditProfile extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile App"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: ListView(
-          children: <Widget>[
-            profilePic(),
-            const SizedBox(height: 20),
-            name(),
-            const SizedBox(height: 20),
-            phoneNumber(),
-            const SizedBox(height: 20),
-            selectGender(),
-            const SizedBox(height: 20),
-            emaiAdd(),
-            const SizedBox(height: 20),
-            dateOfBirth(),
-            const SizedBox(height: 20),
-            bio(),
-            const SizedBox(height: 20),
-            saveButton(),
-            const SizedBox(height: 7),
-            clearButton()
-          ],
+        appBar: AppBar(
+          shadowColor: Colors.transparent,
+          title: const Text("Profile App"),
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: ListView(
+            children: <Widget>[
+              profilePic(),
+              const SizedBox(height: 20),
+              name(),
+              const SizedBox(height: 20),
+              phoneNumber(),
+              const SizedBox(height: 20),
+              emaiAdd(),
+              const SizedBox(height: 20),
+              dateOfBirth(),
+              const SizedBox(height: 20),
+              bio(),
+              const SizedBox(height: 20),
+              saveButton(),
+              const SizedBox(height: 7),
+              clearButton()
+            ],
+          ),
+        ));
   }
 
   Widget profilePic() {
@@ -94,11 +91,15 @@ class _EditProfile extends State<EditProfile> {
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-              backgroundColor: Colors.black,
-              radius: 80.0,
-              backgroundImage: imageFile == null
-                  ? const AssetImage("assets/images/profile.png")
-                  : FileImage(File(imageFile!.path)) as ImageProvider),
+            radius: 83,
+            backgroundColor: Colors.green,
+            child: CircleAvatar(
+                backgroundColor: Colors.black,
+                radius: 80.0,
+                backgroundImage: imageFile == null
+                    ? const AssetImage("assets/images/profile.png")
+                    : FileImage(File(imageFile!.path)) as ImageProvider),
+          ),
           Positioned(
             bottom: 20,
             right: 20,
@@ -237,45 +238,6 @@ class _EditProfile extends State<EditProfile> {
     );
   }
 
-  Widget selectGender() {
-    return DropdownButtonFormField<String>(
-      // Step 3.
-      value: dropdownValue,
-      // Step 4.
-      items: <String>[
-        "Select Gender",
-        "Male",
-        "Female",
-      ].map<DropdownMenuItem<String>>(
-        (String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: const TextStyle(fontSize: 15),
-            ),
-          );
-        },
-      ).toList(),
-      // Step 5.
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-        });
-      },
-      icon: const Icon(
-        Icons.arrow_drop_down_circle,
-      ),
-      decoration: const InputDecoration(
-        labelText: "Gender",
-        prefixIcon: Icon(
-          Icons.people,
-          color: Color.fromARGB(255, 98, 91, 91),
-        ),
-      ),
-    );
-  }
-
   Widget emaiAdd() {
     return TextField(
       controller: _email,
@@ -356,7 +318,7 @@ class _EditProfile extends State<EditProfile> {
         showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text("Alert"),
+            title: const Text("Success"),
             content: const Text("Details Saved"),
             actions: <Widget>[
               TextButton(

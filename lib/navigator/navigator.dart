@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile_app/contacts/contacts.dart';
 import 'package:profile_app/profile/editprofile.dart';
-import 'package:profile_app/weather/weather.dart';
+import 'package:profile_app/weather/weather_Home.dart';
 
 class NavigatorBar extends StatefulWidget {
   const NavigatorBar({super.key});
@@ -13,7 +13,7 @@ class NavigatorBar extends StatefulWidget {
 class _NavigatorBarState extends State<NavigatorBar> {
   int myIndex = 0;
 
-  final List _screens = [EditProfile(), Contacts(), Weather()];
+  final List _screens = const [EditProfile(), Contacts(), Weather()];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,9 +21,8 @@ class _NavigatorBarState extends State<NavigatorBar> {
         body: _screens[myIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color.fromARGB(255, 236, 237, 238),
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.grey,
-          elevation: 0,
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.black,
           onTap: (index) {
             setState(() {
               myIndex = index;
