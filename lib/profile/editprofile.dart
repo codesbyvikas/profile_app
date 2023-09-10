@@ -354,11 +354,11 @@ class _EditProfile extends State<EditProfile> {
           textStyle: const TextStyle(fontSize: 15)),
       onPressed: () async {
         setState(() {
-          _name.value = const TextEditingValue(text: "");
-          _email.value = const TextEditingValue(text: "");
-          _bio.value = const TextEditingValue(text: "");
-          _dob.value = const TextEditingValue(text: "");
-          _phone.value = const TextEditingValue(text: "");
+          _name.clear();
+          _email.clear();
+          _bio.clear();
+          _dob.clear();
+          _phone.clear();
         });
         storeData();
         showDialog(

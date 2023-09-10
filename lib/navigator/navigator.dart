@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile_app/contacts/contacts.dart';
 import 'package:profile_app/profile/editprofile.dart';
-import 'package:profile_app/weather/weather_Home.dart';
+import 'package:profile_app/weather/weather_home.dart';
 
 class NavigatorBar extends StatefulWidget {
   const NavigatorBar({super.key});
